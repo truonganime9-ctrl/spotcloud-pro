@@ -1,0 +1,1398 @@
+<!--
+SPOTCLOUD PRO FULL VERSION
+Spotify + SoundCloud Streaming UI
+FULL LOGIN + PREMIUM + SEARCH + PLAYER
+-->
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SPOTCLOUD PRO</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+rel="stylesheet">
+
+<style>
+
+:root{
+--primary:#00e5ff;
+--secondary:#ff007f;
+--spotify:#1DB954;
+--soundcloud:#ff5500;
+--bg:#050505;
+--card:#101010;
+--surface:rgba(255,255,255,.05);
+--surface2:rgba(255,255,255,.08);
+--text:#fff;
+--muted:#888;
+--border:rgba(255,255,255,.08);
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Inter',sans-serif;
+}
+
+html{
+scroll-behavior:smooth;
+}
+
+body{
+background:var(--bg);
+color:white;
+overflow-x:hidden;
+padding-bottom:120px;
+}
+
+/* BG BLUR */
+
+body::before{
+content:'';
+position:fixed;
+width:500px;
+height:500px;
+background:radial-gradient(circle,
+rgba(0,229,255,.15),
+transparent 70%);
+top:-120px;
+left:-120px;
+filter:blur(80px);
+z-index:-1;
+}
+
+body::after{
+content:'';
+position:fixed;
+width:500px;
+height:500px;
+background:radial-gradient(circle,
+rgba(255,0,127,.12),
+transparent 70%);
+bottom:-120px;
+right:-120px;
+filter:blur(80px);
+z-index:-1;
+}
+
+/* NAVBAR */
+
+.navbar{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:80px;
+padding:0 30px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+background:rgba(5,5,5,.8);
+backdrop-filter:blur(15px);
+border-bottom:1px solid var(--border);
+z-index:999;
+}
+
+.nav-left{
+display:flex;
+align-items:center;
+gap:20px;
+}
+
+.logo-wrap{
+cursor:pointer;
+}
+
+.logo{
+font-size:28px;
+font-weight:800;
+display:flex;
+align-items:center;
+gap:10px;
+background:linear-gradient(45deg,
+var(--primary),
+var(--secondary));
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.logo-sub{
+font-size:11px;
+color:#666;
+margin-top:2px;
+}
+
+.search{
+width:520px;
+position:relative;
+}
+
+.search input{
+width:100%;
+height:48px;
+background:var(--surface);
+border:1px solid var(--border);
+outline:none;
+border-radius:30px;
+padding:0 55px 0 22px;
+color:white;
+font-size:15px;
+transition:.3s;
+}
+
+.search input:focus{
+border-color:var(--primary);
+box-shadow:0 0 20px rgba(0,229,255,.2);
+}
+
+.search i{
+position:absolute;
+right:20px;
+top:16px;
+color:#888;
+}
+
+.search-tags{
+display:flex;
+gap:8px;
+margin-top:8px;
+flex-wrap:wrap;
+}
+
+.search-tags span{
+font-size:11px;
+padding:5px 12px;
+border-radius:30px;
+background:var(--surface);
+color:#aaa;
+cursor:pointer;
+transition:.3s;
+}
+
+.search-tags span:hover{
+background:var(--primary);
+color:black;
+}
+
+.nav-right{
+display:flex;
+align-items:center;
+gap:15px;
+}
+
+.premium-btn{
+padding:12px 20px;
+border:none;
+border-radius:30px;
+background:linear-gradient(45deg,
+#ffd700,
+#ff9900);
+font-weight:700;
+cursor:pointer;
+transition:.3s;
+}
+
+.premium-btn:hover{
+transform:scale(1.05);
+}
+
+.auth-btn{
+padding:12px 18px;
+border:none;
+border-radius:30px;
+background:var(--surface);
+color:white;
+cursor:pointer;
+transition:.3s;
+}
+
+.auth-btn:hover{
+background:var(--surface2);
+}
+
+/* MAIN */
+
+.main{
+max-width:1700px;
+margin:120px auto 0;
+padding:0 30px;
+}
+
+.section{
+margin-bottom:45px;
+}
+
+.section-head{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+}
+
+.section-head h2{
+font-size:26px;
+}
+
+.row-scroll{
+display:flex;
+gap:22px;
+overflow-x:auto;
+padding-bottom:10px;
+scroll-behavior:smooth;
+}
+
+.row-scroll::-webkit-scrollbar{
+height:5px;
+}
+
+.row-scroll::-webkit-scrollbar-thumb{
+background:rgba(255,255,255,.1);
+border-radius:20px;
+}
+
+/* CARD */
+
+.spotify-card{
+min-width:220px;
+background:rgba(255,255,255,.03);
+padding:15px;
+border-radius:20px;
+cursor:pointer;
+transition:.35s;
+position:relative;
+overflow:hidden;
+}
+
+.spotify-card:hover{
+transform:translateY(-7px);
+background:rgba(255,255,255,.06);
+}
+
+.spotify-card img{
+width:100%;
+aspect-ratio:1/1;
+object-fit:cover;
+border-radius:15px;
+}
+
+.spotify-card .title{
+margin-top:12px;
+font-size:15px;
+font-weight:600;
+}
+
+.spotify-card .artist{
+margin-top:4px;
+font-size:13px;
+color:#888;
+}
+
+.play-hover{
+position:absolute;
+right:20px;
+bottom:85px;
+width:58px;
+height:58px;
+border-radius:50%;
+background:linear-gradient(45deg,
+var(--primary),
+var(--secondary));
+display:flex;
+align-items:center;
+justify-content:center;
+opacity:0;
+transform:translateY(10px);
+transition:.3s;
+}
+
+.spotify-card:hover .play-hover{
+opacity:1;
+transform:translateY(0);
+}
+
+/* SEARCH GRID */
+
+.grid{
+display:grid;
+grid-template-columns:
+repeat(auto-fill,minmax(220px,1fr));
+gap:28px;
+}
+
+/* PLAYER */
+
+.player{
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+height:105px;
+background:rgba(5,5,5,.92);
+backdrop-filter:blur(25px);
+border-top:1px solid var(--border);
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 30px;
+z-index:1000;
+}
+
+.left{
+display:flex;
+align-items:center;
+gap:18px;
+width:320px;
+}
+
+.disk{
+width:70px;
+height:70px;
+border-radius:50%;
+object-fit:cover;
+border:2px solid #222;
+}
+
+.spinning{
+animation:spin 4s linear infinite;
+}
+
+@keyframes spin{
+100%{
+transform:rotate(360deg);
+}
+}
+
+.center{
+flex:1;
+display:flex;
+flex-direction:column;
+align-items:center;
+}
+
+.controls{
+display:flex;
+align-items:center;
+gap:20px;
+}
+
+.ctrl-btn{
+background:none;
+border:none;
+color:white;
+font-size:20px;
+cursor:pointer;
+}
+
+.play-main{
+width:58px;
+height:58px;
+border-radius:50%;
+border:none;
+background:linear-gradient(45deg,
+var(--primary),
+var(--secondary));
+color:white;
+font-size:22px;
+cursor:pointer;
+}
+
+/* WAVE */
+
+.wave{
+width:90%;
+display:flex;
+align-items:flex-end;
+gap:2px;
+height:35px;
+margin-top:10px;
+}
+
+.bar{
+flex:1;
+background:#333;
+border-radius:20px;
+transition:.15s;
+}
+
+.bar.active{
+background:linear-gradient(180deg,
+var(--primary),
+var(--secondary));
+box-shadow:0 0 12px var(--primary);
+}
+
+/* VOLUME */
+
+.right{
+width:240px;
+display:flex;
+justify-content:flex-end;
+align-items:center;
+gap:12px;
+}
+
+.volume{
+width:120px;
+appearance:none;
+height:4px;
+border-radius:20px;
+background:rgba(255,255,255,.12);
+opacity:.3;
+transition:.3s;
+}
+
+.volume:hover{
+opacity:1;
+}
+
+.volume::-webkit-slider-thumb{
+appearance:none;
+width:14px;
+height:14px;
+border-radius:50%;
+background:var(--primary);
+box-shadow:0 0 10px var(--primary);
+}
+
+/* TOAST */
+
+.toast{
+position:fixed;
+top:95px;
+right:25px;
+background:rgba(255,255,255,.08);
+border:1px solid rgba(255,255,255,.08);
+backdrop-filter:blur(15px);
+padding:14px 22px;
+border-radius:14px;
+transform:translateX(200%);
+transition:.35s;
+z-index:9999;
+}
+
+.toast.show{
+transform:translateX(0);
+}
+
+/* MODAL */
+
+.modal{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.7);
+display:none;
+align-items:center;
+justify-content:center;
+z-index:99999;
+}
+
+.modal-box{
+width:380px;
+background:#111;
+border:1px solid rgba(255,255,255,.08);
+padding:30px;
+border-radius:25px;
+}
+
+.modal-box h2{
+margin-bottom:20px;
+}
+
+.modal-box input{
+width:100%;
+height:48px;
+margin-bottom:15px;
+border:none;
+outline:none;
+border-radius:14px;
+background:#1b1b1b;
+padding:0 15px;
+color:white;
+}
+
+.modal-box button{
+width:100%;
+height:48px;
+border:none;
+border-radius:14px;
+background:linear-gradient(45deg,
+var(--primary),
+var(--secondary));
+color:white;
+font-weight:700;
+cursor:pointer;
+}
+
+iframe{
+display:none;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="toast" id="toast">
+Đang tải...
+</div>
+
+<!-- LOGIN -->
+
+<div class="modal" id="loginModal">
+
+<div class="modal-box">
+
+<h2>Đăng nhập</h2>
+
+<input type="text"
+placeholder="Tên người dùng">
+
+<input type="password"
+placeholder="Mật khẩu">
+
+<button onclick="closeLogin()">
+Đăng nhập
+</button>
+
+</div>
+
+</div>
+
+<!-- PREMIUM -->
+
+<div class="modal" id="premiumModal">
+
+<div class="modal-box">
+
+<h2>SPOTCLOUD PREMIUM</h2>
+
+<p style="color:#888;
+margin-bottom:20px;
+line-height:1.6;">
+
+• Không quảng cáo<br>
+• Chất lượng cao<br>
+• Tốc độ tải nhanh hơn<br>
+• Hiệu ứng Premium
+
+</p>
+
+<button onclick="buyPremium()">
+Nâng cấp Premium
+</button>
+
+</div>
+
+</div>
+
+<!-- NAVBAR -->
+
+<nav class="navbar">
+
+<div class="nav-left">
+
+<div class="logo-wrap"
+onclick="goHome()">
+
+<div class="logo">
+
+<i class="fab fa-soundcloud"></i>
+
+SPOTCLOUD
+
+</div>
+
+<div class="logo-sub">
+Streaming music experience powered by SoundCloud
+</div>
+
+</div>
+
+<div class="search">
+
+<input
+type="text"
+id="searchInput"
+placeholder="Tìm nhạc: Sơn Tùng, Remix, Lofi, TikTok Viral...">
+
+<i class="fas fa-search"></i>
+
+<div class="search-tags">
+
+<span onclick="quickSearch('Sơn Tùng MTP')">
+Sơn Tùng
+</span>
+
+<span onclick="quickSearch('Lofi Chill')">
+Lofi
+</span>
+
+<span onclick="quickSearch('TikTok Viral')">
+TikTok
+</span>
+
+<span onclick="quickSearch('USUK Remix')">
+USUK
+</span>
+
+<span onclick="quickSearch('EDM Việt')">
+EDM
+</span>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="nav-right">
+
+<button class="premium-btn"
+onclick="openPremium()">
+
+<i class="fas fa-crown"></i>
+Premium
+
+</button>
+
+<button class="auth-btn"
+onclick="openLogin()">
+
+Đăng nhập
+
+</button>
+
+</div>
+
+</nav>
+
+<!-- MAIN -->
+
+<div class="main">
+
+<div id="homePage">
+
+<section class="section">
+
+<div class="section-head">
+<h2>Dành cho bạn</h2>
+</div>
+
+<div class="row-scroll"
+id="recommendedRow">
+</div>
+
+</section>
+
+<section class="section">
+
+<div class="section-head">
+<h2>Remix Hot</h2>
+</div>
+
+<div class="row-scroll"
+id="remixRow">
+</div>
+
+</section>
+
+<section class="section">
+
+<div class="section-head">
+<h2>Lofi & Chill</h2>
+</div>
+
+<div class="row-scroll"
+id="lofiRow">
+</div>
+
+</section>
+
+</div>
+
+<div id="searchPage"
+style="display:none;">
+
+<div class="section-head">
+
+<h2>Kết quả tìm kiếm</h2>
+
+<span id="resultCount">
+0 bài
+</span>
+
+</div>
+
+<div class="grid"
+id="grid">
+</div>
+
+</div>
+
+</div>
+
+<!-- PLAYER -->
+
+<div class="player">
+
+<div class="left">
+
+<img id="pImg"
+class="disk"
+src="https://picsum.photos/200">
+
+<div>
+
+<div id="pTitle">
+Chưa phát nhạc
+</div>
+
+<div id="pArtist"
+style="color:#888;
+font-size:13px;
+margin-top:4px;">
+
+---
+
+</div>
+
+</div>
+
+</div>
+
+<div class="center">
+
+<div class="controls">
+
+<button class="ctrl-btn"
+id="prev">
+
+<i class="fas fa-backward-step"></i>
+
+</button>
+
+<button class="play-main"
+id="playBtn">
+
+<i class="fas fa-play"></i>
+
+</button>
+
+<button class="ctrl-btn"
+id="next">
+
+<i class="fas fa-forward-step"></i>
+
+</button>
+
+</div>
+
+<div class="wave"
+id="wave">
+</div>
+
+</div>
+
+<div class="right">
+
+<i class="fas fa-volume-up"></i>
+
+<input type="range"
+min="0"
+max="100"
+value="100"
+class="volume"
+id="volume">
+
+</div>
+
+</div>
+
+<div id="soundcloud-engine"></div>
+
+<script src="https://w.soundcloud.com/player/api.js"></script>
+
+<script>
+
+const grid =
+document.getElementById('grid');
+
+const toast =
+document.getElementById('toast');
+
+const wave =
+document.getElementById('wave');
+
+let songs = [];
+let homeSongs = [];
+
+let currentIndex = 0;
+let currentWidget = null;
+let playing = false;
+
+/* WAVE */
+
+for(let i=0;i<90;i++){
+
+const bar =
+document.createElement('div');
+
+bar.className='bar';
+
+bar.style.height=
+Math.random()*100+'%';
+
+wave.appendChild(bar);
+
+}
+
+setInterval(()=>{
+
+const bars =
+document.querySelectorAll('.bar');
+
+if(playing){
+
+bars.forEach(bar=>{
+
+bar.classList.add('active');
+
+bar.style.height=
+Math.random()*100+'%';
+
+});
+
+}else{
+
+bars.forEach(bar=>{
+
+bar.classList.remove('active');
+
+bar.style.height='10%';
+
+});
+
+}
+
+},140);
+
+/* TOAST */
+
+function showToast(text){
+
+toast.innerText=text;
+
+toast.classList.add('show');
+
+setTimeout(()=>{
+
+toast.classList.remove('show');
+
+},2500);
+
+}
+
+/* SEARCH */
+
+async function searchMusic(keyword){
+
+showToast('🔍 Đang tìm nhạc...');
+
+try{
+
+const response =
+await fetch(
+`http://localhost:3000/api/search?q=${encodeURIComponent(keyword)}&limit=60`
+);
+
+songs =
+await response.json();
+
+document.getElementById('homePage')
+.style.display='none';
+
+document.getElementById('searchPage')
+.style.display='block';
+
+document.getElementById('resultCount')
+.innerText=songs.length+' bài';
+
+renderSongs(songs);
+
+showToast(
+'✅ Tìm thấy '+songs.length+' bài'
+);
+
+}catch(e){
+
+console.log(e);
+
+showToast(
+'❌ Không kết nối được server'
+);
+
+}
+
+}
+
+/* QUICK SEARCH */
+
+function quickSearch(text){
+
+document.getElementById(
+'searchInput'
+).value=text;
+
+searchMusic(text);
+
+}
+
+/* RENDER SONGS */
+
+function renderSongs(list){
+
+grid.innerHTML='';
+
+list.forEach((song,index)=>{
+
+const card =
+document.createElement('div');
+
+card.className='spotify-card';
+
+card.innerHTML=`
+
+<img src="${song.img}">
+
+<div class="play-hover">
+<i class="fas fa-play"></i>
+</div>
+
+<div class="title">
+${song.title}
+</div>
+
+<div class="artist">
+${song.artist || 'Unknown Artist'}
+</div>
+
+`;
+
+card.onclick=()=>loadSong(index);
+
+grid.appendChild(card);
+
+});
+
+}
+
+/* HOME */
+
+function renderHomeRows(data){
+
+homeSongs=data;
+
+const recommended =
+document.getElementById('recommendedRow');
+
+const remix =
+document.getElementById('remixRow');
+
+const lofi =
+document.getElementById('lofiRow');
+
+recommended.innerHTML='';
+remix.innerHTML='';
+lofi.innerHTML='';
+
+data.slice(0,20)
+.forEach((song,index)=>{
+
+recommended.appendChild(
+createCard(song,index)
+);
+
+});
+
+data.slice(20,40)
+.forEach((song,index)=>{
+
+remix.appendChild(
+createCard(song,index+20)
+);
+
+});
+
+data.slice(40,60)
+.forEach((song,index)=>{
+
+lofi.appendChild(
+createCard(song,index+40)
+);
+
+});
+
+}
+
+function createCard(song,index){
+
+const card =
+document.createElement('div');
+
+card.className='spotify-card';
+
+card.innerHTML=`
+
+<img src="${song.img}">
+
+<div class="play-hover">
+<i class="fas fa-play"></i>
+</div>
+
+<div class="title">
+${song.title}
+</div>
+
+<div class="artist">
+${song.artist || 'Unknown Artist'}
+</div>
+
+`;
+
+card.onclick=()=>{
+
+songs=homeSongs;
+
+loadSong(index);
+
+};
+
+return card;
+
+}
+
+/* LOAD SONG */
+
+function loadSong(index){
+
+currentIndex=index;
+
+const song=songs[index];
+
+document.getElementById('pImg')
+.src=song.img;
+
+document.getElementById('pTitle')
+.innerText=song.title;
+
+document.getElementById('pArtist')
+.innerText=
+song.artist || 'Unknown Artist';
+
+document.getElementById('pImg')
+.classList.add('spinning');
+
+const engine =
+document.getElementById(
+'soundcloud-engine'
+);
+
+engine.innerHTML=`
+
+<iframe
+id="sc-widget"
+width="1"
+height="1"
+allow="autoplay"
+src="https://w.soundcloud.com/player/?url=${encodeURIComponent(song.src)}&auto_play=true&hide_related=true&show_comments=false&show_user=false&show_reposts=false&visual=false">
+</iframe>
+
+`;
+
+setTimeout(()=>{
+
+const iframe =
+document.getElementById(
+'sc-widget'
+);
+
+currentWidget =
+SC.Widget(iframe);
+
+currentWidget.bind(
+SC.Widget.Events.READY,
+function(){
+
+currentWidget.setVolume(
+document.getElementById(
+'volume'
+).value
+);
+
+}
+);
+
+currentWidget.bind(
+SC.Widget.Events.FINISH,
+function(){
+
+nextSong();
+
+}
+);
+
+},400);
+
+playing=true;
+
+document.getElementById(
+'playBtn'
+).innerHTML=
+'<i class="fas fa-pause"></i>';
+
+showToast(
+'▶️ Đang phát: '+song.title
+);
+
+}
+
+/* PLAY PAUSE */
+
+document.getElementById(
+'playBtn'
+).onclick=function(){
+
+if(!currentWidget){
+
+if(songs.length>0){
+
+loadSong(currentIndex);
+
+}
+
+return;
+
+}
+
+if(playing){
+
+currentWidget.pause();
+
+playing=false;
+
+document.getElementById(
+'playBtn'
+).innerHTML=
+'<i class="fas fa-play"></i>';
+
+document.getElementById(
+'pImg'
+).classList.remove(
+'spinning'
+);
+
+showToast('⏸️ Đã tạm dừng');
+
+}else{
+
+currentWidget.play();
+
+playing=true;
+
+document.getElementById(
+'playBtn'
+).innerHTML=
+'<i class="fas fa-pause"></i>';
+
+document.getElementById(
+'pImg'
+).classList.add(
+'spinning'
+);
+
+showToast(
+'▶️ Tiếp tục phát'
+);
+
+}
+
+};
+
+/* NEXT */
+
+function nextSong(){
+
+if(songs.length===0)
+return;
+
+currentIndex++;
+
+if(currentIndex>=songs.length){
+
+currentIndex=0;
+
+}
+
+loadSong(currentIndex);
+
+}
+
+/* PREV */
+
+function prevSong(){
+
+if(songs.length===0)
+return;
+
+currentIndex--;
+
+if(currentIndex<0){
+
+currentIndex=
+songs.length-1;
+
+}
+
+loadSong(currentIndex);
+
+}
+
+document.getElementById(
+'next'
+).onclick=nextSong;
+
+document.getElementById(
+'prev'
+).onclick=prevSong;
+
+/* VOLUME */
+
+document.getElementById(
+'volume'
+).addEventListener(
+'input',
+function(){
+
+if(currentWidget){
+
+currentWidget.setVolume(
+this.value
+);
+
+}
+
+}
+);
+
+/* GO HOME */
+
+function goHome(){
+
+document.getElementById(
+'homePage'
+).style.display='block';
+
+document.getElementById(
+'searchPage'
+).style.display='none';
+
+showToast('🏠 Trang chủ');
+
+}
+
+/* LOGIN */
+
+function openLogin(){
+
+document.getElementById(
+'loginModal'
+).style.display='flex';
+
+}
+
+function closeLogin(){
+
+document.getElementById(
+'loginModal'
+).style.display='none';
+
+showToast('✅ Đăng nhập thành công');
+
+}
+
+/* PREMIUM */
+
+function openPremium(){
+
+document.getElementById(
+'premiumModal'
+).style.display='flex';
+
+}
+
+function buyPremium(){
+
+document.getElementById(
+'premiumModal'
+).style.display='none';
+
+showToast(
+'👑 Premium đã kích hoạt'
+);
+
+}
+
+/* SEARCH ENTER */
+
+document.getElementById(
+'searchInput'
+).addEventListener(
+'keypress',
+function(e){
+
+if(e.key==='Enter'){
+
+searchMusic(this.value);
+
+}
+
+}
+);
+
+/* LOAD HOME MUSIC */
+
+async function loadHomeMusic(){
+
+try{
+
+const response =
+await fetch(
+`http://localhost:3000/api/search?q=Top Music&limit=60`
+);
+
+const data =
+await response.json();
+
+renderHomeRows(data);
+
+}catch(e){
+
+console.log(e);
+
+}
+
+}
+
+loadHomeMusic();
+
+</script>
+
+</body>
+</html>
